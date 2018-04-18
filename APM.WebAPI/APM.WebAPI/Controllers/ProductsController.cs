@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using System.Web.OData;
+using System.Web.Http.OData;
 using APM.WebAPI.Models;
 
 namespace APM.WebAPI.Controllers
@@ -15,12 +15,13 @@ namespace APM.WebAPI.Controllers
     {
         [EnableQuery]
         // GET: api/Products
-        public IQueryable Get()
+        public IQueryable<Product> Get()
         {
             ProductRepository productRepository = new ProductRepository();
             return productRepository.Retrieve().AsQueryable();
         }
 
+        [EnableQuery]
         public IEnumerable<Product> Get(string search)
         {
             ProductRepository productRepository = new ProductRepository();
@@ -28,7 +29,7 @@ namespace APM.WebAPI.Controllers
         }
 
         // GET: api/Products/5
-        public string Get(int id)
+        public string Get(int id) 
         {
             return "value";
         }

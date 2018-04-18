@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.OData.Extensions;
+
+using APM.WebAPI.Models;
+using Microsoft.OData.Edm;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 
@@ -21,11 +25,13 @@ namespace APM.WebAPI
             config.MapHttpAttributeRoutes();
 
             config.EnableCors();
+            config.AddODataQueryFilter();
 
-            config.Routes.MapHttpRoute(
+
+           config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{search}",
-                defaults: new { search = RouteParameter.Optional }
+                routeTemplate: "api/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional }
             );
 
             config.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
