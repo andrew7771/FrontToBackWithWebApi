@@ -11,10 +11,15 @@
         vm.product = {};
         vm.message = '';
 
-        productResource.get({ id: 0 },
+        productResource.get({ id: 5 },
             function (data) {
                 vm.product = data;
                 vm.originalProduct = angular.copy(data);
+            },
+            function (response) {
+                vm.message = response.statusText + "\r\n";
+                if (response.data.exceptionMessage)
+                    vm.message += response.data.exceptionMessage;
             });
 
         if (vm.product && vm.product.productId) {
@@ -28,17 +33,26 @@
             vm.message = '';
             if (vm.product.productId) {
                 vm.product.$update({ id: vm.product.productId },
-                    function(data) {
+                    function (data) {
                         vm.message = "... Save complete";
+                    },
+                    function (response) {
+                        vm.message = response.statusText + "\r\n";
+                        if (response.data.exceptionMessage)
+                            vm.message += response.data.exceptionMessage;
                     });
             } else {
                 vm.product.$save(
-                    function(data) {
+                    function (data) {
                         vm.originalProduct = angular.copy(data);
 
                         vm.message = "... Save complete";
+                    },
+                    function (response) {
+                        vm.message = response.statusText + "\r\n";
+                        if (response.data.exceptionMessage)
+                            vm.message += response.data.exceptionMessage;
                     });
-
             }
         };
 
