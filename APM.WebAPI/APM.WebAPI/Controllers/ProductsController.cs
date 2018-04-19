@@ -21,27 +21,43 @@ namespace APM.WebAPI.Controllers
             return productRepository.Retrieve().AsQueryable();
         }
 
-        [EnableQuery]
-        public IEnumerable<Product> Get(string search)
-        {
-            ProductRepository productRepository = new ProductRepository();
-            return productRepository.Retrieve().Where(p => p.ProductCode.Contains(search));
-        }
-
         // GET: api/Products/5
-        public string Get(int id) 
+        public Product Get(int id)
         {
-            return "value";
+            Product product;
+            var productRepository = new ProductRepository();
+
+            if (id > 0)
+            {
+                var products = productRepository.Retrieve();
+                product = products.FirstOrDefault(p => p.ProductId == id);
+            }
+            else
+            {
+                product = productRepository.Create();
+            }
+            return product;
         }
 
         // POST: api/Products
-        public void Post([FromBody]string value)
+        public void Post([FromBody]Product product)
         {
+            ProductRepository productRepository = new ProductRepository();
+            if (product != null)
+            {
+                Product newProduct = productRepository.Save(product);
+            }
         }
 
         // PUT: api/Products/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]Product product)
         {
+            ProductRepository productRepository = new ProductRepository();
+            if (product != null && id > 0 )
+            {
+                Product newProduct = productRepository.Save(id, product);
+            }
+
         }
 
         // DELETE: api/Products/5
